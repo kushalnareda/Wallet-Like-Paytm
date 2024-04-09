@@ -24,8 +24,8 @@ This is a personal wallet application developed to provide users with features l
 1. Clone the repository.
 2. Install dependencies using `npm install`.
 3. Set up the database and configure the connection in the backend.
-4. Run the backend server using `npm start`.
-5. Navigate to the frontend directory and run the frontend using `npm start`.
+4. Run the backend server using `node index.js`.
+5. Navigate to the frontend directory and run the frontend using `npm run dev`.
 
 ## Usage
 
