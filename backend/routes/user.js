@@ -1,7 +1,7 @@
 const express = require ("express");
 const zod = require("zod");
 const router = express.Router();
-const { User,Account,UserDetails } = require("../db");
+const { User,Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config");
 const { authMiddleware } = require("../middleware");
@@ -10,8 +10,8 @@ const { authMiddleware } = require("../middleware");
 const signupSchema = zod.object({
     username: zod.string().email(),
     password: zod.string(),
-    first_name: zod.string(),
-    last_name: zod.string()
+    firstName: zod.string(),
+    lastName: zod.string()
 });
 
 const signinSchema = zod.object({
@@ -21,8 +21,8 @@ const signinSchema = zod.object({
 
 const updateSchema = zod.object({
     password : zod.string().optional(),
-    first_name : zod.string().optional(),
-    last_name : zod.string().optional()
+    firstName : zod.string().optional(),
+    lastName : zod.string().optional()
 })
 
 router.post("/signup", async(req,res)=>{
@@ -31,7 +31,7 @@ router.post("/signup", async(req,res)=>{
     const body = req.body;
     const {success} = signupSchema.safeParse(req.body);
     if(!success){
-        return res.status(411).json({
+        return res.status(400).json({
             message : "Email already taken / Incorrect inputs"
         });
     }
@@ -42,7 +42,7 @@ router.post("/signup", async(req,res)=>{
     });
     //if it does exist send status code 411
     if(existinguser){
-        return res.status(411).json({
+        return res.status(409).json({
             message : "Email already taken / Incorrect inputs"
         });
     }
@@ -52,8 +52,8 @@ router.post("/signup", async(req,res)=>{
     const user = await User.create({
         username : req.body.username,
         password: req.body.password,
-        first_name : req.body.first_name,
-        last_name: req.body.last_name
+        firstName : req.body.firstName,
+        lastName: req.body.lastName
     });
     //create user Id
     const userId = user._id;
@@ -140,8 +140,8 @@ router.get("/bulk", async (req, res) => {
     // Use the 'User' model to find users whose first name or last name matches the 'filter' using regex
     const users = await User.find({
         $or: [
-            { first_name: { "$regex": filter } },
-            { last_name: { "$regex": filter } }
+            { firstName: { "$regex": filter } },
+            { lastName: { "$regex": filter } }
         ]
     });
     //Regex is used in this code to perform a partial match on 
@@ -153,8 +153,8 @@ router.get("/bulk", async (req, res) => {
     res.json({
         users: users.map(user => ({
             username: user.username,
-            first_name: user.first_name,
-            last_name: user.last_name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             _id: user._id
         }))
     });

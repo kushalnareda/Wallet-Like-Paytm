@@ -1,16 +1,16 @@
 const mongoose = require('mongoose'); 
-const { string } = require('zod');
 
-mongoose.connect("mongodb://localhost:27017/paytm");
+
+mongoose.connect("mongodb://localhost:27017");
 
 const userSchema = new mongoose.Schema({
-    first_name :{
+    firstName :{
         type : String,
         required : true,
         minLength: 3,
         maxLength: 30
     },
-    last_name :{
+    lastName :{
         type : String,
         required : true,
         minLength: 3,
