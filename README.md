@@ -17,7 +17,7 @@ This is a personal wallet application developed to provide users with features l
 - Express
 - React
 - Tailwind CSS
-- PostgreSQL (or any other database used)
+- MongoDB
 
 ## Installation
 
